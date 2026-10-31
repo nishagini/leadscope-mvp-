@@ -91,13 +91,14 @@ section{padding:112px 0}
 
 /* header */
 header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--hdr);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;height:76px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--head);font-weight:800;font-size:1.5rem;letter-spacing:-0.04em;color:var(--ink)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:clamp(12px,1.5vw,20px);height:76px}
+.brand{display:flex;align-items:center;gap:10px;flex:0 0 auto;text-decoration:none;font-family:var(--head);font-weight:800;font-size:1.5rem;letter-spacing:-0.04em;color:var(--ink)}
 .brand b{color:var(--pink);font-weight:800}
 .mark{position:relative;width:38px;height:38px;border-radius:50%;background:var(--green);color:#fff;display:grid;place-items:center;font-size:1.05rem}
 .mark::after{content:"";position:absolute;top:-3px;right:-2px;width:10px;height:10px;background:var(--yellow);clip-path:polygon(0 0,100% 0,100% 100%)}
-nav ul{display:flex;gap:30px;list-style:none;margin:0;padding:0}
-nav a{text-decoration:none;font-weight:500;color:var(--muted);font-size:.95rem;transition:color .15s}
+nav{min-width:0}
+nav ul{display:flex;align-items:center;justify-content:center;gap:clamp(14px,1.5vw,26px);list-style:none;margin:0;padding:0}
+nav a{text-decoration:none;font-weight:500;color:var(--muted);font-size:.92rem;white-space:nowrap;transition:color .15s}
 nav a:hover{color:var(--ink)}
 .btn{display:inline-flex;align-items:center;gap:8px;background:var(--green);color:var(--on-green);text-decoration:none;font-weight:700;padding:14px 26px;border-radius:999px;border:2px solid var(--green);font-size:1rem;cursor:pointer;font-family:var(--body);transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(27,67,50,.28)}
@@ -105,7 +106,8 @@ nav a:hover{color:var(--ink)}
 .btn.alt:hover{border-color:var(--ink);box-shadow:none}
 .btn.pink{background:var(--pink);border-color:var(--pink);color:#fff}
 .btn.pink:hover{box-shadow:0 10px 24px rgba(229,25,94,.35)}
-@media (max-width:900px){nav ul{display:none}}
+.nav-cta{flex:0 0 auto;padding:11px 19px;font-size:.92rem}
+@media (max-width:1080px){nav ul{display:none}}
 
 /* hero */
 .hero{position:relative;overflow:hidden;padding:72px 0 150px;background:radial-gradient(820px 460px at 85% 10%,var(--mint),transparent 70%),var(--bg)}
@@ -521,7 +523,7 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
         <li><a href="#about">About</a></li>
       </ul>
     </nav>
-    <a class="btn js-book" href="#book">Get an opportunity map</a>
+    <a class="btn nav-cta js-book" href="#book">Book a call</a>
   </div>
 </header>
 
