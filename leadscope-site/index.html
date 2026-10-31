@@ -488,12 +488,13 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .bk-actions{display:flex;align-items:center;gap:16px;margin-top:26px;flex-wrap:wrap}
 .bk-actions .btn{border:none}
+.bk-actions .btn.alt{border:1.5px solid var(--line);background:transparent;color:var(--ink);box-shadow:none}
 .bk-actions small{color:var(--muted);font-size:.85rem}
 .done{text-align:left}
 .done .tick{width:60px;height:60px;border-radius:50%;background:var(--mint);color:var(--green);display:grid;place-items:center;font-size:1.7rem;font-weight:800;margin-bottom:20px}
 .done p{margin:10px 0 0}
 .done .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-@media (max-width:560px){.bk{padding:32px 22px 26px}.fg{grid-template-columns:1fr}}
+@media (max-width:560px){.bk{padding:32px 22px 26px}.fg{grid-template-columns:1fr}.bk-actions .btn{width:100%;justify-content:center}.bk-actions small{text-align:center;width:100%}}
 </style>
 <script type="application/ld+json">
 {
@@ -829,7 +830,7 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
     <button class="bk-x" type="button" id="bk-close" aria-label="Close">✕</button>
     <div id="bk-form-view">
       <h2 id="bk-title">Request your opportunity map</h2>
-      <p class="intro">Tell us about your company, offer and market. We will use it to identify the first accounts and signals worth investigating.</p>
+      <p class="intro" id="bk-intro">Tell us about your company, offer and market. We will use it to identify the first accounts and signals worth investigating.</p>
       <form id="lead" autocomplete="on">
         <div class="fg">
           <div class="fld"><label for="f-name">Full name <i>*</i></label><input id="f-name" name="name" autocomplete="name" required></div>
@@ -853,7 +854,7 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
           <div class="fld full"><label for="f-msg">What do you sell, and who is the ideal buyer?</label><textarea id="f-msg" name="challenge" placeholder="For example: a data platform for U.S. mid-market retailers, sold to VPs of Data and CTOs."></textarea></div>
           <div class="hp" aria-hidden="true"><label>Leave this empty<input name="company_url" tabindex="-1" autocomplete="off"></label></div>
         </div>
-        <div class="bk-actions"><button class="btn pink" type="submit" id="bk-submit">Request opportunity map</button><small>We only use this to research your request and reply to you.</small></div>
+        <div class="bk-actions"><button class="btn pink" type="submit" id="bk-submit">Request opportunity map</button><button class="btn alt" type="button" id="bk-not-now" hidden>Not now</button><small>We only use this to research your request and reply to you.</small></div>
       </form>
     </div>
     <div id="bk-done-view" class="done" hidden>
@@ -1025,8 +1026,34 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
   var fv=document.getElementById('bk-form-view'), dv=document.getElementById('bk-done-view');
   var topics=document.querySelectorAll('#f-topics input');
   var map={'Agentic GTM Teardown':'GTM Teardown'};
+  var title=document.getElementById('bk-title'), intro=document.getElementById('bk-intro');
+  var submit=document.getElementById('bk-submit'), notNow=document.getElementById('bk-not-now');
+  var PROMPT_KEY='leadscope_strategy_prompt_v1', PROMPT_GAP=7*24*60*60*1000;
+  var started=Date.now(), autoPromptDone=false, currentSource='Leadscope opportunity map';
 
-  function openBook(topic){
+  try{
+    var saved=JSON.parse(localStorage.getItem(PROMPT_KEY)||'null');
+    autoPromptDone=!!(saved&&saved.at&&Date.now()-saved.at<PROMPT_GAP);
+  }catch(e){}
+
+  function rememberPrompt(status){
+    autoPromptDone=true;
+    try{localStorage.setItem(PROMPT_KEY,JSON.stringify({at:Date.now(),status:status}));}catch(e){}
+  }
+
+  function setBookCopy(isStrategy){
+    title.textContent=isStrategy?'Want a clearer GTM plan?':'Request your opportunity map';
+    intro.textContent=isStrategy?'Book a free 20-minute strategy call. We will identify one practical agent workflow for your sales process.':'Tell us about your company, offer and market. We will use it to identify the first accounts and signals worth investigating.';
+    submit.textContent=isStrategy?'Book my free strategy call':'Request opportunity map';
+    submit.setAttribute('data-idle-label',submit.textContent);
+    notNow.hidden=!isStrategy;
+    currentSource=isStrategy?'Free strategy call prompt':'Leadscope opportunity map';
+  }
+
+  function openBook(topic,isStrategy){
+    if(dlg.open)return;
+    rememberPrompt(isStrategy?'auto-shown':'form-opened');
+    setBookCopy(!!isStrategy);
     fv.hidden=false; dv.hidden=true;
     topics.forEach(function(c){c.checked=false;});
     if(topic){topic=map[topic]||topic;topics.forEach(function(c){if(c.value===topic)c.checked=true;});}
@@ -1038,9 +1065,10 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
 
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('.js-book');
-    if(a){e.preventDefault();openBook(a.getAttribute('data-topic'));}
+    if(a){e.preventDefault();openBook(a.getAttribute('data-topic'),false);}
   });
   document.getElementById('bk-close').addEventListener('click',closeBook);
+  notNow.addEventListener('click',closeBook);
   document.getElementById('bk-done-close').addEventListener('click',closeBook);
   dlg.addEventListener('click',function(e){if(e.target===dlg)closeBook();});
   dlg.addEventListener('close',function(){document.documentElement.classList.remove('lock');});
@@ -1048,13 +1076,14 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
   function collect(){
     var d=new FormData(form), picked=[];
     topics.forEach(function(c){if(c.checked)picked.push(c.value);});
-    return {name:d.get('name'),email:d.get('email'),company:d.get('company'),website:d.get('website'),role:d.get('role'),stage:d.get('stage'),interests:picked,challenge:d.get('challenge'),source:'Leadscope opportunity map',submittedAt:new Date().toISOString()};
+    return {name:d.get('name'),email:d.get('email'),company:d.get('company'),website:d.get('website'),role:d.get('role'),stage:d.get('stage'),interests:picked,challenge:d.get('challenge'),source:currentSource,submittedAt:new Date().toISOString()};
   }
   function mailUrl(x){
     var body=['Name: '+x.name,'Email: '+x.email,'Company: '+x.company,'Website: '+(x.website||'-'),'Role: '+(x.role||'-'),'Stage: '+(x.stage||'-'),'Interested in: '+(x.interests.join(', ')||'-'),'','Biggest GTM challenge:',x.challenge||'-'].join('\n');
     return 'mailto:'+CONFIG.email+'?subject='+encodeURIComponent('Opportunity map request: '+x.company)+'&body='+encodeURIComponent(body);
   }
   function showDone(mode,x,url){
+    rememberPrompt('submitted');
     fv.hidden=true; dv.hidden=false;
     var first=(x.name||'').split(' ')[0]||'there';
     document.getElementById('bk-done-title').textContent='Thank you, '+first+'.';
@@ -1068,16 +1097,34 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
     e.preventDefault();
     if(form.elements['company_url'].value) return;
     if(!form.reportValidity()) return;
-    var x=collect(), btn=document.getElementById('bk-submit');
+    var x=collect(), btn=document.getElementById('bk-submit'), idleLabel=btn.getAttribute('data-idle-label')||btn.textContent;
     function viaMail(){var u=mailUrl(x);showDone('mail',x,u);window.location.href=u;}
     if(CONFIG.endpoint){
       btn.disabled=true; btn.textContent='Sending...';
       fetch(CONFIG.endpoint,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8','Accept':'application/json'},body:JSON.stringify(x)})
         .then(function(r){if(!r.ok)throw new Error('bad');showDone('sent',x);})
         .catch(function(){viaMail();})
-        .then(function(){btn.disabled=false;btn.textContent='Request opportunity map';form.reset();});
+        .then(function(){btn.disabled=false;btn.textContent=idleLabel;form.reset();});
     } else { viaMail(); form.reset(); }
   });
+
+  function triggerStrategyPrompt(){
+    if(autoPromptDone||dlg.open||document.visibilityState!=='visible')return;
+    openBook('Not sure yet',true);
+  }
+
+  if(!autoPromptDone){
+    setTimeout(triggerStrategyPrompt,30000);
+    window.addEventListener('scroll',function(){
+      var page=document.documentElement;
+      if((page.scrollTop+page.clientHeight)>=page.scrollHeight*.5)triggerStrategyPrompt();
+    },{passive:true});
+    if(window.matchMedia&&window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+      document.addEventListener('mouseout',function(e){
+        if(Date.now()-started>=10000&&!e.relatedTarget&&e.clientY<=8)triggerStrategyPrompt();
+      });
+    }
+  }
 })();
 </script>
 
