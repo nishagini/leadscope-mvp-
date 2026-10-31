@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>Leadscope Agent Workflow</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -142,9 +143,184 @@ svg.links path.live { stroke: var(--agent); stroke-dasharray: none; stroke-width
   .brain .orb { animation: none; }
   * { transition: none !important; }
 }
-</style>
 
-<div class="wrap"><div class="note">Mockup for leadscope.in · <b>new</b> hero copy + animated workflow section + rep-week comparison · sample account data for illustration</div></div>
+/* Premium presentation pass: shared alignment, stronger hierarchy and quieter depth. */
+html { scroll-behavior: smooth; }
+body { margin: 0; overflow-x: hidden; }
+.wrap {
+  max-width: 1280px;
+  padding-left: clamp(24px, 4vw, 56px);
+  padding-right: clamp(24px, 4vw, 56px);
+}
+.hero {
+  position: relative;
+  isolation: isolate;
+  max-width: 1280px;
+  margin-block: 44px 64px;
+  padding-block: 76px;
+  gap: 24px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 32px;
+  background:
+    radial-gradient(720px 360px at 100% 0%, color-mix(in srgb, var(--agent) 12%, transparent), transparent 72%),
+    radial-gradient(620px 300px at 0% 100%, color-mix(in srgb, var(--human) 8%, transparent), transparent 72%),
+    var(--surface);
+  box-shadow: 0 26px 70px rgba(15, 42, 30, 0.09);
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 240px;
+  height: 240px;
+  right: -85px;
+  bottom: -115px;
+  border: 1px solid color-mix(in srgb, var(--agent) 24%, transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 34px color-mix(in srgb, var(--agent) 4%, transparent), 0 0 0 68px color-mix(in srgb, var(--agent) 3%, transparent);
+}
+.hero h1 {
+  max-width: 1100px;
+  font-size: clamp(42px, 5vw, 68px);
+  line-height: 1.025;
+  letter-spacing: -0.045em;
+  text-wrap: pretty;
+}
+.hero p { max-width: 74ch; font-size: 19px; line-height: 1.65; }
+.chips { gap: 10px; }
+.chips span {
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+}
+.ctas { gap: 14px; margin-top: 2px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 14px 24px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn.primary { box-shadow: 0 12px 24px color-mix(in srgb, var(--primary) 20%, transparent); }
+.btn:hover { transform: translateY(-2px); }
+
+.flow-section {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--section) 82%, var(--surface)), var(--section));
+}
+.flow-section .wrap { padding-block: 82px 96px; gap: 34px; }
+.flow-head { align-items: flex-end; gap: 28px; }
+.flow-head h2 {
+  max-width: 21ch;
+  font-size: clamp(34px, 3.8vw, 50px);
+  line-height: 1.07;
+  letter-spacing: -0.035em;
+}
+.legend {
+  gap: 16px;
+  padding: 8px 9px 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  box-shadow: 0 8px 24px rgba(15, 42, 30, 0.04);
+}
+.ctrl { min-height: 36px; padding-inline: 15px; }
+.stage { gap: 28px; }
+.brain {
+  padding: 15px 21px;
+  border-radius: 18px;
+  box-shadow: 0 18px 42px rgba(15, 42, 30, 0.2);
+}
+.brain .orb { width: 38px; height: 38px; }
+.brain b { font-size: 16px; }
+.cards { gap: 16px; align-items: stretch; }
+.card {
+  grid-template-rows: minmax(76px, auto) minmax(238px, 1fr) minmax(172px, auto);
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--line) 88%, var(--ink));
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(15, 42, 30, 0.055);
+}
+.card:hover { border-color: color-mix(in srgb, var(--agent) 48%, var(--line)); }
+.card.active {
+  transform: translateY(-7px);
+  box-shadow: 0 24px 54px rgba(15, 42, 30, 0.14);
+}
+.card-top { min-height: 76px; padding: 17px 16px; }
+.num { width: 32px; height: 32px; }
+.card h3 { font-size: 16px; letter-spacing: -0.015em; }
+.half { padding: 16px; gap: 10px; }
+.half p { font-size: 13.5px; line-height: 1.52; }
+.out { margin-top: 2px; padding: 10px 11px; border-radius: 10px; }
+.human-half { border-radius: 0; }
+.loop {
+  min-height: 58px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface) 55%, transparent);
+}
+.detail {
+  padding: 24px;
+  gap: 0;
+  border-radius: 20px;
+  box-shadow: 0 12px 34px rgba(15, 42, 30, 0.055);
+}
+.detail > div { padding-inline: 22px; }
+.detail > div:first-child { padding-left: 0; }
+.detail > div:last-child { padding-right: 0; }
+.detail > div + div { border-left: 1px solid var(--line); }
+.detail p { line-height: 1.55; }
+.sample { text-align: center; }
+
+.week { padding-block: 82px 96px; gap: 28px; }
+.week h2 { font-size: clamp(30px, 3.4vw, 42px); letter-spacing: -0.03em; }
+.bars {
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: 0 14px 38px rgba(15, 42, 30, 0.06);
+}
+.bar { height: 54px; border-radius: 12px; }
+
+@media (max-width: 1180px) {
+  .hero { margin: 28px 24px 52px; padding-block: 60px; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cards .card:last-child { grid-column: 1 / -1; }
+  .card { grid-template-rows: minmax(72px, auto) auto auto; }
+  svg.links { display: none; }
+  .detail { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .detail > div { padding: 0 0 18px; }
+  .detail > div:last-child { padding-bottom: 0; }
+  .detail > div + div { border-left: 0; border-top: 1px solid var(--line); padding-top: 18px; }
+}
+@media (max-width: 700px) {
+  .wrap { padding-left: 20px; padding-right: 20px; }
+  .hero { margin: 14px 12px 34px; padding: 42px 24px; border-radius: 24px; }
+  .hero h1 { font-size: clamp(36px, 11vw, 48px); letter-spacing: -0.04em; }
+  .hero p { font-size: 17px; }
+  .chips span { width: 100%; }
+  .ctas { display: grid; }
+  .btn { width: 100%; }
+  .flow-section .wrap { padding-block: 60px 70px; }
+  .flow-head { align-items: flex-start; }
+  .flow-head h2 { font-size: 36px; }
+  .legend { width: 100%; justify-content: space-between; }
+  .cards { grid-template-columns: minmax(0, 1fr); padding-left: 0; }
+  .cards .card:last-child { grid-column: auto; }
+  .card { min-height: 0; }
+  .token .lbl { display: none; }
+  .detail { padding: 20px; }
+  .week { padding-block: 60px 70px; }
+  .bars { padding: 18px; }
+  .bar-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .bar { height: 48px; font-size: 11px; }
+  .bar div { padding-inline: 8px; }
+}
+</style>
 
 <header class="wrap hero">
   <h1>Make every rep <span class="hl">10x more productive.</span> Agents do the prep. Operators make the calls.</h1>
