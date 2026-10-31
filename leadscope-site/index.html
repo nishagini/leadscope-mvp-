@@ -947,7 +947,13 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
     try{
       var doc=frame.contentDocument;
       if(!doc)return;
-      var h=Math.max(doc.documentElement.scrollHeight,doc.body?doc.body.scrollHeight:0);
+      var h=0;
+      if(doc.body){
+        Array.prototype.forEach.call(doc.body.children,function(el){
+          h=Math.max(h,el.getBoundingClientRect().bottom);
+        });
+      }
+      if(!h)h=Math.max(doc.documentElement.scrollHeight,doc.body?doc.body.scrollHeight:0);
       if(h)frame.style.height=h+'px';
       if(window.ResizeObserver&&!observer){observer=new ResizeObserver(fit);observer.observe(doc.documentElement);}
     }catch(e){}
