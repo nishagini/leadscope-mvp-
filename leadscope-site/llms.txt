@@ -1,6 +1,6 @@
 # Leadscope
 
-> Leadscope is a B2B go-to-market (GTM) agency based in Bengaluru, India, working with growth-stage technology companies (seed to Series B SaaS, IT services and software firms, and teams selling into the U.S.). We own GTM execution — turning founder-led selling into a repeatable, forecastable pipeline and revenue engine.
+> Leadscope is a GTM engineering and agentic outbound company based in Bengaluru, India. We build and operate signal-driven prospecting systems for SaaS and IT companies selling into the U.S. AI agents handle research, prioritisation and personalisation; experienced sales operators control strategy, quality and conversion.
 
 Key facts:
 - Website: https://leadscope.in/
@@ -10,12 +10,12 @@ Key facts:
 
 ## What we offer
 
-Five ways to work with us (most clients begin with the sprint or the teardown):
+Five ways to work with us:
 
-1. **Outbound 0→1 Sprint** (flagship): build the first working outbound engine — ICP, target accounts, persona messaging, tooling and live sequences.
-2. **GTM Teardown** (1 to 2 weeks): an honest audit of where your current go-to-market is leaking before you spend on outreach.
-3. **Managed outbound and SDR pod**: we run outbound for you, from list building to booked meetings, with weekly pipeline reviews.
-4. **Partner co-sell engine**: activate partnerships and channel co-selling motions that create sourced and influenced pipeline.
+1. **Agentic GTM Sprint** (flagship): turn the ICP and sales playbook into a supervised prospecting system with buying signals, agent workflows, human approval rules and CRM integration.
+2. **Agentic GTM Teardown** (1 to 2 weeks): audit the ICP, signals, data, messaging, stack and approval points, then design the first workflow worth automating.
+3. **Managed agentic outbound**: operate targeting, research, outreach, reply intelligence and CRM updates with a named human accountable for quality.
+4. **Partner co-sell engine**: monitor account and ecosystem signals, then activate partnerships and channel motions that create sourced and influenced pipeline.
 5. **Fractional growth lead**: senior GTM ownership part-time, for teams that need direction more than headcount.
 
 ## Who this is for
@@ -31,19 +31,29 @@ Five ways to work with us (most clients begin with the sprint or the teardown):
 - Anyone who wants a bought list blasted at volume
 - Buyers who need a 12-month lock-in before seeing results
 
+## How the agentic system works
+
+1. Find account signals such as hiring, leadership, funding, technology and partner activity.
+2. Research the account, buying committee and commercial context.
+3. Prioritise the route: outbound, partner-led or account expansion.
+4. Draft evidence-based outreach within approved claims and tone.
+5. Learn from replies and update the CRM.
+
+Humans retain control over ICP, claims, tone, exceptions and material external actions.
+
 ## The 90-day model
 
-- Days 0–30 — Foundation: ICP, target accounts, persona messaging, tool stack and dashboards.
-- Days 31–60 — Launch: email, LinkedIn and phone outreach live; first meetings booked; weekly pipeline reviews.
-- Days 61–90 — Scale and hand over: optimise on conversion data, coach or hire SDRs, document the playbook.
+- Days 0–30 — Map and build: ICP, signals, scoring logic, evidence rules and the first agent workflow.
+- Days 31–60 — Launch under supervision: operators review research and outreach while the system learns from responses.
+- Days 61–90 — Compound and hand over: improve the strongest plays, connect partner routes and document the operating system.
 
 ## Typical questions
 
-- "What does Leadscope do?" — GTM execution for growth-stage tech companies: positioning, outbound pipeline, SDR pods, partner co-sell, conversion and governance.
+- "What does Leadscope do?" — GTM engineering and agentic outbound for complex B2B sales, combining AI-assisted account work with experienced human sales operators.
 - "How long until we see pipeline?" — Progress is structured to be visible monthly across a 90-day cycle.
 - "Where are you based?" — Bengaluru, India; we serve clients in India, the U.S. and the U.K.
 
-Note: the site has an interactive "Is your company ready for outbound?" readiness check that scores fit in under a minute, and a booking form ("Book a growth call") at https://leadscope.in/.
+Note: the site has an interactive "Is your GTM ready for agents?" readiness check and an opportunity-map request form at https://leadscope.in/.
 
 ## Blog
 
