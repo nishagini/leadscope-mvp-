@@ -1,0 +1,343 @@
+<title>Leadscope Agent Workflow</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: one section, Leadscope brand. Five split cards (agent on top, operator below) in a row, a Claude + GPT "brain" above, a learning loop below, then a rep-week comparison. */
+:root {
+  --bg: #ffffff;
+  --section: #f5f8f5;
+  --surface: #ffffff;
+  --ink: #0f2a1e;
+  --text: #3b4b42;
+  --muted: #6b7b72;
+  --line: #dbe4de;
+  --primary: #1b4332;
+  --agent: #2d8a5f;
+  --agent-soft: #e4f3ea;
+  --human: #e5195e;
+  --human-soft: #fde7ef;
+  --highlight: rgba(229, 25, 94, 0.22);
+  --shadow: 0 10px 30px rgba(15, 42, 30, 0.08);
+  --display: "Plus Jakarta Sans", "Trebuchet MS", Arial, sans-serif;
+  --body: "DM Sans", "Segoe UI", Arial, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1510; --section: #0f1c15; --surface: #142319; --ink: #e9f2ec; --text: #b9c8bf; --muted: #8a9b91;
+    --line: #24392d; --primary: #7fd6a4; --agent: #5fc58f; --agent-soft: #173526; --human: #ff5c8f; --human-soft: #3a1626;
+    --highlight: rgba(255, 92, 143, 0.3); --shadow: 0 10px 30px rgba(0, 0, 0, 0.35); color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1510; --section: #0f1c15; --surface: #142319; --ink: #e9f2ec; --text: #b9c8bf; --muted: #8a9b91;
+  --line: #24392d; --primary: #7fd6a4; --agent: #5fc58f; --agent-soft: #173526; --human: #ff5c8f; --human-soft: #3a1626;
+  --highlight: rgba(255, 92, 143, 0.3); --shadow: 0 10px 30px rgba(0, 0, 0, 0.35); color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.note { font-family: var(--mono); font-size: 12px; color: var(--muted); padding-block: 14px; border-bottom: 1px dashed var(--line); }
+.note b { color: var(--human); font-weight: 500; }
+
+/* Hero excerpt */
+.hero { padding-block: 56px 40px; display: grid; gap: 20px; max-width: 860px; }
+.hero h1 { font-family: var(--display); font-weight: 800; color: var(--ink); font-size: clamp(32px, 5vw, 54px); line-height: 1.08; letter-spacing: -0.02em; margin: 0; text-wrap: balance; }
+.hero h1 .hl { background: linear-gradient(transparent 64%, var(--highlight) 64%); }
+.hero p { margin: 0; font-size: 18px; max-width: 64ch; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--ink); }
+.chips span::before { content: "✓"; color: var(--agent); font-weight: 700; margin-right: 6px; }
+.chips .new { color: var(--human); font-weight: 700; }
+.chips .new::before { color: var(--human); }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn { font: 700 15px var(--body); border-radius: 999px; padding: 13px 22px; border: 1.5px solid var(--primary); cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--primary); color: var(--bg); }
+.btn.ghost { background: transparent; color: var(--primary); }
+.btn:focus-visible, .card:focus-visible, .ctrl:focus-visible { outline: 3px solid var(--human); outline-offset: 3px; }
+
+/* Workflow section */
+.flow-section { background: var(--section); border-block: 1px solid var(--line); }
+.flow-section .wrap { padding-block: 56px; display: grid; gap: 28px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--agent); }
+.flow-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px; }
+.flow-head h2 { font-family: var(--display); color: var(--ink); font-weight: 800; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.15; margin: 6px 0 0; letter-spacing: -0.015em; max-width: 22ch; text-wrap: balance; }
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--ink); align-items: center; }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.ctrl { font: 500 13px var(--mono); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+
+.stage { position: relative; display: grid; gap: 22px; }
+.brain { justify-self: center; display: flex; align-items: center; gap: 12px; background: var(--ink); color: var(--bg); border-radius: 14px; padding: 12px 18px; position: relative; z-index: 2; box-shadow: var(--shadow); }
+.brain .orb { width: 34px; height: 34px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--agent), var(--primary)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--agent) 30%, transparent); animation: pulse 2.4s ease-in-out infinite; }
+.brain b { font-family: var(--display); font-size: 15px; display: block; }
+.brain small { font-family: var(--mono); font-size: 11px; opacity: 0.8; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 9px color-mix(in srgb, var(--agent) 10%, transparent); } }
+svg.links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: visible; }
+svg.links path { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 4 5; }
+svg.links path.live { stroke: var(--agent); stroke-dasharray: none; stroke-width: 2; }
+
+.cards { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; z-index: 2; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; display: grid; grid-template-rows: auto 1fr auto; cursor: pointer; transition: border-color .3s, box-shadow .3s, transform .3s; min-width: 0; text-align: left; font: inherit; color: inherit; padding: 0; }
+.card.active { border-color: var(--agent); box-shadow: var(--shadow); transform: translateY(-3px); }
+.card-top { padding: 14px 14px 10px; display: flex; gap: 10px; align-items: center; }
+.num { font: 500 12px var(--mono); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--section); color: var(--ink); border: 1px solid var(--line); flex: none; }
+.card.active .num { background: var(--agent); color: var(--bg); border-color: var(--agent); }
+.card h3 { margin: 0; font-family: var(--display); font-size: 15px; color: var(--ink); line-height: 1.25; }
+.half { padding: 12px 14px; display: grid; gap: 8px; align-content: start; }
+.half .tag { font: 500 11px var(--mono); letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; }
+.agent-half { border-top: 1px solid var(--line); }
+.agent-half .tag { color: var(--agent); }
+.human-half { border-top: 1px dashed var(--line); background: color-mix(in srgb, var(--human-soft) 45%, transparent); border-radius: 0 0 15px 15px; position: relative; }
+.human-half .tag { color: var(--human); }
+.half p { margin: 0; font-size: 13.5px; line-height: 1.45; }
+.model { font: 500 10px var(--mono); padding: 2px 6px; border-radius: 4px; background: var(--ink); color: var(--bg); text-transform: none; letter-spacing: 0; }
+.card.agent-on .agent-half { background: var(--agent-soft); }
+.out { font-size: 12.5px; line-height: 1.4; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--agent); border-radius: 8px; padding: 8px 10px; color: var(--ink); opacity: 0.35; transition: opacity .4s; }
+.out .k { font: 500 10px var(--mono); color: var(--muted); display: block; margin-bottom: 2px; text-transform: uppercase; letter-spacing: .05em; }
+.card.agent-on .out, .card.done .out { opacity: 1; }
+.stamp { justify-self: start; font: 700 11px var(--mono); color: var(--human); border: 1.5px solid var(--human); border-radius: 6px; padding: 3px 8px; transform: rotate(-4deg) scale(.6); opacity: 0; transition: transform .35s cubic-bezier(.3,1.6,.5,1), opacity .25s; }
+.card.approved .stamp, .card.done .stamp { opacity: 1; transform: rotate(-4deg) scale(1); }
+
+.token { position: absolute; z-index: 3; left: 0; top: 0; transform: translate(-50%, -50%); transition: left .8s cubic-bezier(.6,0,.3,1), top .8s cubic-bezier(.6,0,.3,1); pointer-events: none; display: flex; align-items: center; gap: 8px; }
+.token .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--human); box-shadow: 0 0 0 5px color-mix(in srgb, var(--human) 25%, transparent), 0 0 18px var(--human); }
+.token .lbl { font: 500 11px var(--mono); background: var(--ink); color: var(--bg); padding: 4px 8px; border-radius: 6px; white-space: nowrap; }
+
+.loop { border: 1.5px dashed var(--line); border-radius: 14px; padding: 12px 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; font-size: 14px; color: var(--ink); transition: border-color .4s, background .4s; }
+.loop.flash { border-color: var(--agent); background: var(--agent-soft); }
+.loop .arrow { font-family: var(--mono); color: var(--agent); margin-right: 6px; }
+.counters { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 500 12.5px var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.counters b { color: var(--ink); font-weight: 500; }
+
+.detail { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.detail h4 { margin: 0 0 6px; font: 500 11px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+.detail p { margin: 0; font-size: 14.5px; color: var(--ink); }
+.detail .a h4 { color: var(--agent); } .detail .h h4 { color: var(--human); } .detail .r h4 { color: var(--muted); }
+.sample { font: 500 11px var(--mono); color: var(--muted); }
+
+/* Rep week */
+.week { padding-block: 56px; display: grid; gap: 22px; }
+.week h2 { font-family: var(--display); color: var(--ink); font-weight: 800; font-size: clamp(24px, 3vw, 34px); margin: 6px 0 0; letter-spacing: -0.015em; }
+.bars { display: grid; gap: 18px; }
+.bar-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; align-items: center; }
+.bar-row > span { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 15px; }
+.bar { display: flex; height: 46px; border-radius: 10px; overflow: hidden; font: 500 12.5px var(--body); }
+.bar div { display: flex; align-items: center; padding: 0 12px; white-space: nowrap; overflow: hidden; transition: flex-basis 1.2s cubic-bezier(.5,0,.2,1); }
+.seg-grind { background: var(--line); color: var(--ink); }
+.seg-review { background: var(--human-soft); color: var(--human); font-weight: 700; }
+.seg-sell { background: var(--agent); color: var(--bg); font-weight: 700; }
+.caption { font-size: 13px; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: minmax(0, 1fr); padding-left: 34px; }
+  svg.links { display: none; }
+  .detail { grid-template-columns: minmax(0, 1fr); }
+  .token .lbl { display: none; }
+  .bar-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .token { display: none; }
+  .card .out { opacity: 1; }
+  .card .stamp { opacity: 1; transform: rotate(-4deg); }
+  .brain .orb { animation: none; }
+  * { transition: none !important; }
+}
+</style>
+
+<div class="wrap"><div class="note">Mockup for leadscope.in · <b>new</b> hero copy + animated workflow section + rep-week comparison · sample account data for illustration</div></div>
+
+<header class="wrap hero">
+  <h1>Make every rep <span class="hl">10x more productive.</span> Agents do the prep. Operators make the calls.</h1>
+  <p>Leadscope builds and runs AI agents on Claude and GPT that find signals, research accounts and draft outreach for SaaS and IT companies selling into the U.S. An experienced seller approves every material step.</p>
+  <div class="chips"><span>Signal-based targeting</span><span>AI account research</span><span>Human-reviewed outreach</span><span>Partner co-sell</span><span class="new">Built on Claude + GPT</span></div>
+  <div class="ctas"><a class="btn primary" href="#flow">Get your 20-account opportunity map</a><a class="btn ghost" href="#flow">Watch the agent work ↓</a></div>
+</header>
+
+<section class="flow-section" id="flow">
+  <div class="wrap">
+    <div class="flow-head">
+      <div>
+        <div class="eyebrow">How the system works</div>
+        <h2>Watch the agent work an account. The operator signs off at every step.</h2>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--agent)"></i>Agent does</span>
+        <span><i style="background:var(--human)"></i>Operator approves</span>
+        <button class="ctrl" id="toggle" type="button" aria-pressed="false">❚❚ Pause</button>
+      </div>
+    </div>
+
+    <div class="stage" id="stage">
+      <svg class="links" id="links" aria-hidden="true"></svg>
+      <div class="brain" id="brain"><div class="orb"></div><div><b>Agent brain</b><small>Claude + GPT orchestrator</small></div></div>
+      <div class="cards" id="cards"></div>
+      <div class="token" id="token" aria-hidden="true"><div class="dot"></div><div class="lbl">Acme Fintech · Series B</div></div>
+      <div class="loop" id="loop">
+        <div><span class="arrow">↺</span>Every reply and every rep edit makes the next play sharper.</div>
+        <div class="counters" aria-live="polite">
+          <span>Accounts worked <b id="cAcc">0</b></span>
+          <span>Operator approvals <b id="cApp">0</b></span>
+          <span>Live conversations <b id="cConv">0</b></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail" id="detail" aria-live="polite">
+      <div class="a"><h4>Agent does</h4><p id="dA"></p></div>
+      <div class="h"><h4>Operator decides</h4><p id="dH"></p></div>
+      <div class="r"><h4>Rep no longer has to</h4><p id="dR"></p></div>
+    </div>
+    <div class="sample">Tap or hover a step to pause and read it. Sample account, for illustration.</div>
+  </div>
+</section>
+
+<section class="wrap week" id="week">
+  <div>
+    <div class="eyebrow">Where a rep's week goes</div>
+    <h2>Less time on the grind. More time selling.</h2>
+  </div>
+  <div class="bars">
+    <div class="bar-row"><span>Without agents</span>
+      <div class="bar"><div class="seg-grind" style="flex-basis:70%">Research, lists, writing, CRM admin ~70%</div><div class="seg-sell" style="flex-basis:30%">Selling ~30%</div></div></div>
+    <div class="bar-row"><span>With Leadscope</span>
+      <div class="bar"><div class="seg-review" id="segR" style="flex-basis:20%">Review &amp; approve ~20%</div><div class="seg-sell" id="segS" style="flex-basis:80%">Conversations &amp; closing ~80%</div></div></div>
+  </div>
+  <div class="caption">Illustrative. Your teardown measures your real baseline: [X accounts researched per rep per day].</div>
+</section>
+
+<script>
+const STEPS = [
+  { t: "Find the signal", model: null,
+    agent: "Watches hiring, leadership, funding, tech and partner activity across your target accounts.",
+    out: ["Signal", "3 data-platform roles posted · new U.S. office opened"],
+    human: "Confirms the signal is real and worth acting on.",
+    rep: "Trawl LinkedIn, job boards and news by hand every morning." },
+  { t: "Research the account", model: "Claude",
+    agent: "Maps the company, buying committee, commercial context and likely pain.",
+    out: ["Brief", "CTO 4 months in · VP Data · Head of Platform. Pain: scaling data infra for U.S. launch"],
+    human: "Adds insider context and corrects anything the agent got wrong.",
+    rep: "Spend 30+ tabs piecing together who matters and why." },
+  { t: "Prioritise the play", model: null,
+    agent: "Scores fit and timing, then recommends the route to market.",
+    out: ["Play", "High fit, high timing · CTO-first · Snowflake co-sell intro as backup"],
+    human: "Picks the route: cold, partner-led or account expansion.",
+    rep: "Guess which accounts to work this week." },
+  { t: "Draft the outreach", model: "Claude / GPT",
+    agent: "Writes email and LinkedIn copy from the evidence, not generic personalisation.",
+    out: ["Draft", "“Saw you're hiring three data-platform engineers for the U.S. launch…”"],
+    human: "Approves claims and tone. Nothing sends without this.",
+    rep: "Write every first line from scratch." },
+  { t: "Learn from replies", model: "Claude",
+    agent: "Classifies replies, updates the CRM and drafts the next response.",
+    out: ["Reply", "Interested → meeting proposed Tue 3:00 PM ET · CRM updated"],
+    human: "Takes over the live conversation and runs the call.",
+    rep: "Sort inboxes and update the CRM after every touch." }
+];
+const BRAIN_LINKS = [1, 3, 4];
+
+const $ = id => document.getElementById(id);
+const cardsEl = $("cards"), token = $("token"), stage = $("stage"), links = $("links");
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+cardsEl.innerHTML = STEPS.map((s, i) => `
+  <button class="card" type="button" data-i="${i}" aria-label="Step ${i + 1}: ${s.t}">
+    <div class="card-top"><span class="num">0${i + 1}</span><h3>${s.t}</h3></div>
+    <div class="half agent-half">
+      <div class="tag">● Agent does ${s.model ? `<span class="model">${s.model}</span>` : ""}</div>
+      <p>${s.agent}</p>
+      <div class="out"><span class="k">${s.out[0]}</span>${s.out[1]}</div>
+    </div>
+    <div class="half human-half">
+      <div class="tag">● Operator approves</div>
+      <p>${s.human}</p>
+      <div class="stamp">✓ Operator approved</div>
+    </div>
+  </button>`).join("");
+const cards = [...cardsEl.children];
+
+let cur = 0, paused = false, hoverPaused = false, timer = null;
+const count = { acc: 0, app: 0, conv: 0 };
+
+function showDetail(i) {
+  $("dA").textContent = STEPS[i].agent;
+  $("dH").textContent = STEPS[i].human;
+  $("dR").textContent = STEPS[i].rep;
+}
+function placeToken(i) {
+  const s = stage.getBoundingClientRect(), n = cards[i].querySelector(".num").getBoundingClientRect();
+  const narrow = innerWidth <= 900;
+  token.style.left = (narrow ? cards[i].getBoundingClientRect().left - s.left - 18 : n.left - s.left + n.width / 2) + "px";
+  token.style.top = (narrow ? n.top - s.top + n.height / 2 : n.top - s.top - 14) + "px";
+}
+function drawLinks() {
+  const s = stage.getBoundingClientRect(), b = $("brain").getBoundingClientRect();
+  const bx = b.left - s.left + b.width / 2, by = b.bottom - s.top;
+  links.innerHTML = BRAIN_LINKS.map(i => {
+    const c = cards[i].getBoundingClientRect();
+    const x = c.left - s.left + c.width / 2, y = c.top - s.top;
+    return `<path data-i="${i}" d="M${bx},${by} C${bx},${by + 30} ${x},${y - 30} ${x},${y}"/>`;
+  }).join("");
+}
+function setActive(i) {
+  cards.forEach((c, k) => c.classList.toggle("active", k === i));
+  links.querySelectorAll("path").forEach(p => p.classList.toggle("live", +p.dataset.i === i));
+  placeToken(i);
+  showDetail(i);
+}
+function bump(k, id) { count[k]++; $(id).textContent = count[k]; }
+
+function run() {
+  clearTimeout(timer);
+  if (paused || hoverPaused) return;
+  const c = cards[cur];
+  if (cur === 0) cards.forEach(x => x.classList.remove("done", "approved", "agent-on"));
+  setActive(cur);
+  timer = setTimeout(() => {
+    c.classList.add("agent-on");
+    timer = setTimeout(() => {
+      c.classList.add("approved"); bump("app", "cApp");
+      timer = setTimeout(() => {
+        c.classList.remove("agent-on"); c.classList.add("done");
+        if (cur === STEPS.length - 1) {
+          bump("acc", "cAcc"); bump("conv", "cConv");
+          $("loop").classList.add("flash");
+          setTimeout(() => $("loop").classList.remove("flash"), 1400);
+        }
+        cur = (cur + 1) % STEPS.length;
+        run();
+      }, 900);
+    }, 1500);
+  }, 800);
+}
+
+cards.forEach((c, i) => {
+  const pin = () => { if (reduce) { setActive(i); return; } hoverPaused = true; clearTimeout(timer); cur = i; setActive(i); c.classList.add("agent-on", "approved"); };
+  const unpin = () => { if (reduce) return; hoverPaused = false; c.classList.remove("agent-on"); run(); };
+  c.addEventListener("mouseenter", pin);
+  c.addEventListener("mouseleave", unpin);
+  c.addEventListener("focus", pin);
+  c.addEventListener("blur", unpin);
+  c.addEventListener("click", () => { pin(); if (!reduce) { paused = true; syncToggle(); } });
+});
+function syncToggle() { const b = $("toggle"); b.textContent = paused ? "▶ Play" : "❚❚ Pause"; b.setAttribute("aria-pressed", paused); }
+$("toggle").addEventListener("click", () => { paused = !paused; syncToggle(); if (!paused) { hoverPaused = false; run(); } });
+
+addEventListener("resize", () => { drawLinks(); placeToken(cur); });
+document.fonts?.ready.then(() => { drawLinks(); placeToken(cur); });
+drawLinks();
+if (reduce) { cards.forEach(c => c.classList.add("done")); setActive(0); $("toggle").hidden = true; }
+else { setActive(0); run(); }
+
+// Rep-week bar: grow from the "without" split when scrolled into view
+if (!reduce && "IntersectionObserver" in window) {
+  const r = $("segR"), s = $("segS");
+  let played = false;
+  new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting && !played) {
+      played = true;
+      r.style.flexBasis = "70%"; s.style.flexBasis = "30%";
+      requestAnimationFrame(() => requestAnimationFrame(() => { r.style.flexBasis = "20%"; s.style.flexBasis = "80%"; }));
+    }
+  }), { threshold: 0.5 }).observe($("week"));
+}
+</script>
