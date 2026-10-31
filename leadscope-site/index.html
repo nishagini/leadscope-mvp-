@@ -264,6 +264,10 @@ nav a:hover{color:var(--ink)}
 @media (max-width:620px){.agent-shell{padding:36px 20px;border-radius:28px}.workflow-grid{grid-template-columns:1fr}.wf-card:last-child{grid-column:auto}.agent-legend{display:grid}.learning-loop,.agent-cta,.work-shift-head{align-items:flex-start;flex-direction:column}.shift-grid{grid-template-columns:1fr}.work-shift-head p{text-align:left}.agent-cta .btn{width:100%;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.agent-orb{animation:none}.wf-card,.wf-output,.wf-num,.wf-stamp{transition:none}}
 
+/* exact Claude workflow mockup */
+.exact-workflow-host{padding:0;background:#fff;overflow:hidden}
+.exact-workflow-frame{display:block;width:100%;height:1900px;border:0;background:#fff}
+
 /* clients */
 .clients{padding:88px 0 56px;text-align:center}
 .clients h2{font-size:clamp(1.6rem,2.8vw,2.2rem)}
@@ -579,53 +583,8 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
 
 <main id="top">
 
-<section class="hero" id="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <h1 class="rise">GTM engineering and <span class="hl">agentic outbound</span> for complex B2B sales.</h1>
-      <p class="lede rise" style="--d:.12s">We build and operate signal-driven prospecting systems for SaaS and IT companies selling into the U.S. AI agents handle research, prioritisation and personalisation. Experienced sales operators control strategy, quality and conversion.</p>
-      <ul class="pillars rise" style="--d:.22s"><li>Signal-based targeting</li><li>AI account research</li><li>Human-reviewed outreach</li><li>Partner co-sell</li></ul>
-      <div class="cta-row rise" style="--d:.32s">
-        <a class="btn js-book" href="#book">Get a 20-account opportunity map <span class="arr" aria-hidden="true">→</span></a>
-        <a class="btn alt" href="#agents">See how the system works</a>
-      </div>
-      <p class="fine rise" style="--d:.42s">Your first 20 accounts, ranked by fit and a reason to reach out now. No bought list. No automated blast.</p>
-    </div>
-
-    <div class="stage rise" style="--d:.2s" aria-label="Sample growth dashboard">
-      <div class="layer l-main" style="--k:-6">
-        <aside class="gcard report">
-          <div class="report-head"><h3>Account opportunity map</h3><span class="tag">Sample</span></div>
-          <div class="bigrow"><div><small>Accounts worth working now</small><strong id="bigNum" data-to="20">20</strong></div><span class="chip">Human approved</span></div>
-          <div class="frow"><span>ICP matched</span><div class="bar"><i data-w="100"></i></div><b data-to="120">120</b></div>
-          <div class="frow"><span>Signals found</span><div class="bar"><i data-w="68"></i></div><b data-to="42">42</b></div>
-          <div class="frow"><span>Deep researched</span><div class="bar"><i data-w="48"></i></div><b data-to="28">28</b></div>
-          <div class="frow"><span>Operator approved</span><div class="bar"><i data-w="34"></i></div><b data-to="20">20</b></div>
-          <div class="frow"><span>Live conversations</span><div class="bar"><i data-w="16"></i></div><b data-to="6">6</b></div>
-          <p class="note"><strong>Agent finding:</strong> this account added three data-platform roles and opened a U.S. office. The operator approved a CTO-first play.</p>
-        </aside>
-      </div>
-
-      <div class="layer l-toast" style="--k:12">
-        <div class="gcard toast" id="toast" role="status" aria-live="off">
-          <div class="av" id="toastAv">AI</div>
-          <div class="tx"><b id="toastT">Buying signal detected</b><span id="toastS">Series B SaaS · U.S. expansion<br>Research complete</span></div>
-        </div>
-      </div>
-
-      <div class="layer l-spark" style="--k:14">
-        <div class="gcard spark">
-          <div class="row"><div><small>Research automated</small><strong>82%</strong></div><span class="chip">QA checked</span></div>
-          <svg viewBox="0 0 160 56" preserveAspectRatio="none" aria-hidden="true">
-            <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e5195e" stop-opacity=".28"/><stop offset="1" stop-color="#e5195e" stop-opacity="0"/></linearGradient></defs>
-            <path class="ar" d="M2 46 C20 44 30 38 48 40 S78 26 96 24 S128 12 158 6 L158 56 L2 56 Z"/>
-            <path class="ln" d="M2 46 C20 44 30 38 48 40 S78 26 96 24 S128 12 158 6"/>
-          </svg>
-        </div>
-      </div>
-      <span class="stage-cap">Sample data for illustration</span>
-    </div>
-  </div>
+<section class="exact-workflow-host" id="agents" aria-label="Leadscope agent workflow mockup">
+  <iframe class="exact-workflow-frame" id="agentWorkflowFrame" src="agent-workflow.html" title="Leadscope Agent Workflow" scrolling="no" loading="eager"></iframe>
 </section>
 
 <section class="proof" aria-label="Track record">
@@ -635,97 +594,6 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
       <div><strong>$1.5M ARR</strong><span>closed from zero in 14 months</span></div>
       <div><strong>3X</strong><span>SDR pipeline efficiency from our outbound workflow</span></div>
       <div><strong>10+ clients</strong><span>won in the first 6 months of running Leadscope</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="agent-system" id="agents">
-  <div class="wrap">
-    <div class="agent-shell rv">
-      <div class="agent-head">
-        <div class="agent-intro">
-          <span class="agent-kicker">How the system works</span>
-          <h2>Watch the agent work an account. <span style="color:var(--yellow)">The operator signs off.</span></h2>
-          <p>This is not a black-box AI SDR. Agents prepare the evidence and the next-best action; an experienced seller controls the claims, route and conversation.</p>
-        </div>
-        <div class="agent-controls">
-          <div class="agent-legend" aria-label="Workflow legend">
-            <span><i aria-hidden="true"></i>Agent does</span>
-            <span><i aria-hidden="true"></i>Operator decides</span>
-          </div>
-          <button class="agent-toggle" id="agentToggle" type="button" aria-pressed="false">❚❚ Pause</button>
-        </div>
-      </div>
-
-      <div class="agent-demo" id="agentDemo">
-        <div class="agent-brain"><span class="agent-orb" aria-hidden="true"></span><span><strong>Leadscope agent layer</strong><small>Signal → evidence → next-best action</small></span></div>
-
-        <div class="workflow-grid" aria-label="Leadscope agentic outbound workflow">
-          <button class="wf-card active" type="button" aria-pressed="true"
-            data-agent="Monitors hiring, leadership, funding, technology and partner activity across target accounts."
-            data-human="Confirms the signal is real, relevant and worth acting on now."
-            data-rep="Trawl LinkedIn, job boards and company news every morning.">
-            <span class="wf-top"><span class="wf-num">01</span><h3>Find the signal</h3></span>
-            <span class="wf-half wf-agent"><span class="wf-tag">Agent does</span><p>Watches account and ecosystem activity continuously.</p><span class="wf-output"><b>Signal found</b>3 data-platform roles posted · new U.S. office opened</span></span>
-            <span class="wf-half wf-human"><span class="wf-tag">Operator decides</span><p>Confirms the signal is real and commercially relevant.</p><span class="wf-stamp">Approved</span></span>
-          </button>
-
-          <button class="wf-card" type="button" aria-pressed="false"
-            data-agent="Maps the company, buying committee, commercial context and likely pain from available evidence."
-            data-human="Adds insider context and corrects assumptions before the account brief is used."
-            data-rep="Spend 30 tabs piecing together who matters and why.">
-            <span class="wf-top"><span class="wf-num">02</span><h3>Research the account</h3></span>
-            <span class="wf-half wf-agent"><span class="wf-tag">Agent does</span><p>Builds the account, buyer and commercial context.</p><span class="wf-output"><b>Account brief</b>CTO 4 months in · VP Data · Head of Platform · U.S. expansion</span></span>
-            <span class="wf-half wf-human"><span class="wf-tag">Operator decides</span><p>Adds context and corrects anything the agent got wrong.</p><span class="wf-stamp">QA checked</span></span>
-          </button>
-
-          <button class="wf-card" type="button" aria-pressed="false"
-            data-agent="Scores fit and timing, then recommends the strongest route into the account."
-            data-human="Chooses whether the play should be cold, partner-led or an account-expansion route."
-            data-rep="Guess which accounts deserve attention this week.">
-            <span class="wf-top"><span class="wf-num">03</span><h3>Prioritise the play</h3></span>
-            <span class="wf-half wf-agent"><span class="wf-tag">Agent does</span><p>Scores fit, timing and the likely path to a conversation.</p><span class="wf-output"><b>Recommended play</b>High fit · high timing · CTO-first · partner intro as backup</span></span>
-            <span class="wf-half wf-human"><span class="wf-tag">Operator decides</span><p>Picks the route and defines the account strategy.</p><span class="wf-stamp">Route chosen</span></span>
-          </button>
-
-          <button class="wf-card" type="button" aria-pressed="false"
-            data-agent="Drafts email and LinkedIn copy from account evidence instead of generic personalisation."
-            data-human="Approves the claim, tone and call to action. Nothing sends without the approved rules."
-            data-rep="Write every first line and account angle from scratch.">
-            <span class="wf-top"><span class="wf-num">04</span><h3>Draft the outreach</h3></span>
-            <span class="wf-half wf-agent"><span class="wf-tag">Agent does</span><p>Turns the evidence into a relevant outreach draft.</p><span class="wf-output"><b>Draft angle</b>“Saw you are adding three data-platform roles for the U.S. launch…”</span></span>
-            <span class="wf-half wf-human"><span class="wf-tag">Operator decides</span><p>Approves claims, tone and the next-best action.</p><span class="wf-stamp">Copy approved</span></span>
-          </button>
-
-          <button class="wf-card" type="button" aria-pressed="false"
-            data-agent="Classifies replies, prepares CRM updates and recommends the next response."
-            data-human="Takes over the live conversation, handles nuance and runs the sales call."
-            data-rep="Sort every inbox and update the CRM after each touch.">
-            <span class="wf-top"><span class="wf-num">05</span><h3>Learn from replies</h3></span>
-            <span class="wf-half wf-agent"><span class="wf-tag">Agent does</span><p>Classifies the reply and prepares the next action.</p><span class="wf-output"><b>Reply intelligence</b>Interested · meeting proposed · CRM update prepared</span></span>
-            <span class="wf-half wf-human"><span class="wf-tag">Operator decides</span><p>Takes over the conversation and runs the call.</p><span class="wf-stamp">Seller online</span></span>
-          </button>
-        </div>
-
-        <div class="learning-loop"><span><strong>↺ Learning loop:</strong> every reply and every operator edit sharpens the next account play.</span><span class="loop-badge">Human-controlled</span></div>
-
-        <div class="workflow-detail">
-          <div><h4>Agent does</h4><p id="agentDetail">Monitors hiring, leadership, funding, technology and partner activity across target accounts.</p></div>
-          <div><h4>Operator decides</h4><p id="humanDetail">Confirms the signal is real, relevant and worth acting on now.</p></div>
-          <div><h4>Rep no longer has to</h4><p id="repDetail">Trawl LinkedIn, job boards and company news every morning.</p></div>
-        </div>
-        <p class="workflow-note">Click or tap a step to inspect it. Sample account data for illustration.</p>
-
-        <div class="work-shift">
-          <div class="work-shift-head"><div><span class="agent-kicker">What changes for the rep</span><h3>Less time assembling the work. More time selling.</h3></div><p>Workflow shift shown without unverified productivity claims.</p></div>
-          <div class="shift-grid">
-            <div class="shift-card"><strong>Without the system</strong><div class="shift-list"><span>Build lists</span><span>Search for signals</span><span>Research accounts</span><span>Write first lines</span><span>Update CRM</span></div></div>
-            <div class="shift-card with"><strong>With Leadscope</strong><div class="shift-list"><span>Review evidence</span><span>Choose the play</span><span>Handle nuance</span><span>Run conversations</span><span>Close and expand</span></div></div>
-          </div>
-        </div>
-
-        <div class="agent-cta"><p>See what the system finds—and what an experienced operator recommends—for your market.</p><a class="btn js-book" href="#book">Map my first 20 accounts <span class="arr" aria-hidden="true">→</span></a></div>
-      </div>
     </div>
   </div>
 </section>
@@ -1066,6 +934,25 @@ dialog.book::backdrop{background:rgba(10,30,20,.6);backdrop-filter:blur(4px)}
     result.innerHTML='<strong>Your score: '+n+' of 6</strong><span>'+body+'</span>'+(n>0?'<br><a href="#book" class="js-book" data-topic="'+subj+'">Talk through your score</a>':'');
   }
   boxes.forEach(function(b){b.addEventListener('change',update);});
+})();
+</script>
+
+<script>
+(function(){
+  var frame=document.getElementById('agentWorkflowFrame');
+  if(!frame)return;
+  var observer;
+  function fit(){
+    try{
+      var doc=frame.contentDocument;
+      if(!doc)return;
+      var h=Math.max(doc.documentElement.scrollHeight,doc.body?doc.body.scrollHeight:0);
+      if(h)frame.style.height=h+'px';
+      if(window.ResizeObserver&&!observer){observer=new ResizeObserver(fit);observer.observe(doc.documentElement);}
+    }catch(e){}
+  }
+  frame.addEventListener('load',function(){fit();setTimeout(fit,250);setTimeout(fit,1200);});
+  window.addEventListener('resize',fit,{passive:true});
 })();
 </script>
 
